@@ -11,14 +11,14 @@ QA_FILE = "qa_data.json"
 # Function to load the question-answer pairs from the file
 def load_qa_data():
     if os.path.exists(QA_FILE):
-        with open(QA_FILE, 'r') as f:
+        with open(QA_FILE, 'r', encoding='utf-8') as f:  # Specify UTF-8 encoding
             return json.load(f)  # Load existing data from the file
     return {}
 
 # Function to save the question-answer pairs to the file
 def save_qa_data():
-    with open(QA_FILE, 'w') as f:
-        json.dump(qa_dict, f, indent=4)  # Save the updated dictionary to the file
+    with open(QA_FILE, 'w', encoding='utf-8') as f:  # Specify UTF-8 encoding
+        json.dump(qa_dict, f, indent=4, ensure_ascii=False)  # Save the updated dictionary with proper encoding
 
 # Load the dictionary at startup
 qa_dict = load_qa_data()
