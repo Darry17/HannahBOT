@@ -38,7 +38,7 @@ def handle_message(message):
         bot.reply_to(message, qa_dict[user_input])  # Respond with the known answer
     else:
         # Step 4: If the bot doesn't know the answer, ask the user for the correct response
-        msg = bot.reply_to(message, "I don't know the answer to that. What should I reply?")
+        msg = bot.reply_to(message, "di ko po alam sasabihin 🥺, ano po want niyong sabihin ko?")
         # Step 5: Wait for the user's next message, which will be the answer
         bot.register_next_step_handler(msg, learn_response, user_input)
 
@@ -47,7 +47,7 @@ def learn_response(message, question):
     answer = message.text  # Get the user's answer
     qa_dict[question] = answer  # Store it in the dictionary
     save_qa_data()  # Save the updated data to the file
-    bot.reply_to(message, "Got it! I'll remember that.")
+    bot.reply_to(message, "Okay pooo 😊👌")
 
 # Step 7: Start the bot
 bot.polling(none_stop=True, timeout=123)
