@@ -3,8 +3,33 @@ import telebot
 API_KEY = '7239889112:AAFTAkzrbs-a_u8o29c5FvGjHci5lsV_9IQ'
 bot = telebot.TeleBot(API_KEY)
 
+# A simple dictionary to store known questions and answers
+qa_dict = {}
+
+# Step 1: The bot handles known commands like /hi
 @bot.message_handler(commands=['hi'])
 def hi(message):
-    bot.reply_to(message, "Hi Mommy, Hi Daddy 😊") 
+    bot.reply_to(message, "Hi Mommy, Hi Daddy 😊")
 
+# Step 2: General message handler for user questions
+@bot.message_handler(func=lambda message: True)  # This will handle any message
+def handle_message(message):
+    user_input = message.text.lower()  # Get the message text, lowercased for easier matching
+    
+    # Step 3: Check if the question is already known
+    if user_input in qa_dict:
+        bot.reply_to(message, qa_dict[user_input])  # Respond with the known answer
+    else:
+        # Step 4: If the bot doesn't know the answer, ask the user for the correct response
+        msg = bot.reply_to(message, "I don't know the answer to that. What should I reply?")
+        # Step 5: Wait for the user's next message, which will be the answer
+        bot.register_next_step_handler(msg, learn_response, user_input)
+
+# Step 6: Function to store the new question-answer pair
+def learn_response(message, question):
+    answer = message.text  # Get the user's answer
+    qa_dict[question] = answer  # Store it in the dictionary
+    bot.reply_to(message, "Got it! I'll remember that.")
+
+# Step 7: Start the bot
 bot.polling(none_stop=True, timeout=123)
