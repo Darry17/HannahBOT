@@ -1,10 +1,27 @@
 import telebot
+import json
+import os
 
 API_KEY = '7239889112:AAFTAkzrbs-a_u8o29c5FvGjHci5lsV_9IQ'
 bot = telebot.TeleBot(API_KEY)
 
-# A simple dictionary to store known questions and answers
-qa_dict = {}
+# Path to the file that will store the questions and answers
+QA_FILE = "qa_data.json"
+
+# Function to load the question-answer pairs from the file
+def load_qa_data():
+    if os.path.exists(QA_FILE):
+        with open(QA_FILE, 'r') as f:
+            return json.load(f)  # Load existing data from the file
+    return {}
+
+# Function to save the question-answer pairs to the file
+def save_qa_data():
+    with open(QA_FILE, 'w') as f:
+        json.dump(qa_dict, f, indent=4)  # Save the updated dictionary to the file
+
+# Load the dictionary at startup
+qa_dict = load_qa_data()
 
 # Step 1: The bot handles known commands like /hi
 @bot.message_handler(commands=['hi'])
@@ -29,6 +46,7 @@ def handle_message(message):
 def learn_response(message, question):
     answer = message.text  # Get the user's answer
     qa_dict[question] = answer  # Store it in the dictionary
+    save_qa_data()  # Save the updated data to the file
     bot.reply_to(message, "Got it! I'll remember that.")
 
 # Step 7: Start the bot
