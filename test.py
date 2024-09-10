@@ -8,4 +8,9 @@ bot = telebot.TeleBot(API_KEY)
 def hi(message):
     bot.reply_to(message, "Hi Mommy, Hi Daddy 😊") 
 
-bot.polling()
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, "Bot is running!")
+
+
+bot.polling(none_stop=True, timeout=123)
