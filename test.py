@@ -12,5 +12,4 @@ def hi(message):
 def start(message):
     bot.reply_to(message, "Bot is running!")
 
-
 bot.polling(none_stop=True, timeout=123)
