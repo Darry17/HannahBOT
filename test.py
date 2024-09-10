@@ -1,7 +1,7 @@
 import telebot
+import os
 
-API_KEY = '7239889112:AAFTAkzrbs-a_u8o29c5FvGjHci5lsV_9IQ'
-
+API_KEY = os.getenv('API_KEY')
 bot = telebot.TeleBot(API_KEY)
 
 @bot.message_handler(commands=['hi'])
